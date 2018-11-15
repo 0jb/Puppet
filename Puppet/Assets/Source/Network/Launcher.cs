@@ -4,12 +4,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Puppet.Network.Launcher
+namespace Puppet.Source.Network
 {
     public class Launcher : MonoBehaviourPunCallbacks
     {
 
         #region Private Serializable Variables
+
+        [SerializeField]
+        private GameManager _gameManager;
 
         #endregion
 
@@ -44,6 +47,7 @@ namespace Puppet.Network.Launcher
 
         public override void OnJoinedRoom()
         {
+            _gameManager.gameObject.SetActive(true);
             Debug.Log("Joined room!");
         }
 
