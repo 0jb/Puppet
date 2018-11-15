@@ -32,9 +32,23 @@ namespace Puppet.Source.Network
 
         #region MonoBehaviourPunCallbacks Callbacks
 
+        #region Public Variables
+        
+        public enum GameConnectState
+        {
+            Disconnected,
+            Connected,
+            Joined
+        }
+
+        public GameConnectState CurrentState;
+
+        #endregion
+
         public override void OnConnectedToMaster()
         {
             Debug.Log("Connected!");
+            CurrentState = GameConnectState.Connected;
             PhotonNetwork.JoinRandomRoom();
         }
 
@@ -47,7 +61,8 @@ namespace Puppet.Source.Network
 
         public override void OnJoinedRoom()
         {
-            _gameManager.gameObject.SetActive(true);
+            CurrentState = GameConnectState.Joined;
+            _gameManager.Connected();
             Debug.Log("Joined room!");
         }
 
@@ -88,6 +103,7 @@ namespace Puppet.Source.Network
         /// </summary>
         public void Connect()
         {
+            CurrentState = GameConnectState.Disconnected;
             if(PhotonNetwork.IsConnected)
             {
                 PhotonNetwork.JoinRandomRoom();

@@ -9,9 +9,7 @@ namespace Puppet.Source.Network
 
     public class Player : MonoBehaviourPun, IPunObservable
     {
-
-        [SerializeField]
-        private string _playerName = "";
+        public string _playerName = "";
 
         [SerializeField]
         private string _playerTarget;
@@ -27,6 +25,7 @@ namespace Puppet.Source.Network
             {
                 string possibleName = (string)stream.ReceiveNext();
 
+                // Established link between both
                 if(possibleName == _playerName)
                 {
                     Debug.Log("Found me!");
