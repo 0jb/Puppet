@@ -10,18 +10,27 @@ namespace Puppet.Source.Network
     public class Player : MonoBehaviourPun, IPunObservable
     {
 
-        public float debug;
-        public float receiving_debug;
+        [SerializeField]
+        private string _playerName = "";
+
+        [SerializeField]
+        private string _playerTarget;
+        
 
         public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
         {
             if (stream.IsWriting)
             {
-                stream.SendNext(debug);
+                stream.SendNext(_playerTarget);
             }
             else if (stream.IsReading)
             {
-                transform.position = new Vector3( 0.0f, (float)stream.ReceiveNext(), 0.0f);
+                string possibleName = (string)stream.ReceiveNext();
+
+                if(possibleName == _playerName)
+                {
+                    Debug.Log("Found me!");
+                }
             }
         }
     }
