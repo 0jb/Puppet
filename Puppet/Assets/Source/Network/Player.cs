@@ -21,7 +21,8 @@ namespace Puppet.Source.Network
         
         private void Start()
         {
-            PhotonNetwork.LocalPlayer.NickName = _playerName;
+            PhotonNetwork.NickName = _playerName;
+            Debug.Log(photonView.Owner.NickName);
             if(photonView.Owner.IsLocal)
             {
 
