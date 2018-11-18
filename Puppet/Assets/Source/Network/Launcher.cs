@@ -15,24 +15,19 @@ namespace Puppet.Source.Network
         private GameManager _gameManager;
 
         #endregion
+        
 
-        #region Private Variables
-        /// <sumary>
         /// This client's version number. Users are separated from each other by gameversion. (which allows you to make breaking changes).
-        /// </sumary>
         private string _gameVersion = "1";
-
-        /// <summary>
+        
         /// The maximum number of players per room. If maximum is reached, will create a new room.
-        /// </summary>
         [SerializeField]
         private byte _maxPlayersPerRoom = 4;
 
-        #endregion
+        RoomOptions roomOptions;
 
-        #region MonoBehaviourPunCallbacks Callbacks
-
-        #region Public Variables
+        TypedLobby typedLobby;
+        
         
         public enum GameConnectState
         {
@@ -44,21 +39,20 @@ namespace Puppet.Source.Network
         public GameConnectState CurrentState;
 
         public string roomName;
-
-        #endregion
-
+        
         public override void OnConnectedToMaster()
         {
             Debug.Log("Connected!");
             CurrentState = GameConnectState.Connected;
-            PhotonNetwork.JoinRandomRoom();
+            Debug.Log("room name:" + roomName);
+            PhotonNetwork.JoinOrCreateRoom(roomName, roomOptions, typedLobby);
         }
 
         public override void OnJoinRandomFailed(short returnCode, string message)
         {
             Debug.Log("Joined room failed! Error: " + returnCode + " " + message);
             Debug.Log("Will create room.");
-            PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = _maxPlayersPerRoom });
+            PhotonNetwork.CreateRoom(roomName, new RoomOptions { MaxPlayers = _maxPlayersPerRoom });
         }
 
         public override void OnJoinedRoom()
@@ -83,25 +77,18 @@ namespace Puppet.Source.Network
             // We don't join the lobby. There's no need to join the loby to get the list of rooms.
             PhotonNetwork.AutomaticallySyncScene = true;
             
-        }
-
-               
-        #endregion
-
-        #region Public Methods
+        }            
 
 
         public void SetRoomName(string name)
         {
             roomName = name;
         }
-
-        /// <summary>
-        /// Start the connection process.
-        /// - If already connected, we attempt joining a random room.
-        /// - If not yet connected, Connect this application instance to Photon Cloud Network
-        /// </summary>
-        public void Connect(string roomName)
+        
+        // Start the connection process.
+        // - If already connected, we attempt joining a random room.
+        // - If not yet connected, Connect this application instance to Photon Cloud Network
+        public void Connect()
         {
             CurrentState = GameConnectState.Disconnected;
             RoomOptions roomOptions = new RoomOptions();
@@ -113,6 +100,7 @@ namespace Puppet.Source.Network
             if(PhotonNetwork.IsConnected)
             {
                 //PhotonNetwork.JoinRandomRoom();
+                Debug.Log("room name:" +roomName);
                 PhotonNetwork.JoinOrCreateRoom(roomName, roomOptions, typedLobby);
             }
             else
@@ -121,8 +109,7 @@ namespace Puppet.Source.Network
                 PhotonNetwork.ConnectUsingSettings();
             }
         }
-
-        #endregion
+        
     }
 
 }
