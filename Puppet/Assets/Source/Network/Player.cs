@@ -21,7 +21,6 @@ namespace Puppet.Source.Network
         
         private void Start()
         {
-            PhotonNetwork.NickName = _playerName;
             Debug.Log(photonView.Owner.NickName);
             if(photonView.Owner.IsLocal)
             {
@@ -32,6 +31,7 @@ namespace Puppet.Source.Network
         public void ChangePlayerName(string newName)
         {
             _playerName = newName;
+            PhotonNetwork.NickName = _playerName;
         }
 
         public void ChangePlayerColor (Color playerColor)
