@@ -18,6 +18,8 @@ namespace Puppet.Source.Network
 
         private string _playerName;
 
+        private string _targetName;
+
         private GameObject _playerRef;
 
 
@@ -26,11 +28,17 @@ namespace Puppet.Source.Network
             _playerName = name;
         }
 
+        public void TargetName (string name)
+        {
+            _targetName = name;
+        }
+
         public void CreatePlayer()
         {
             Instance = this;
             _playerRef = PhotonNetwork.Instantiate(_player.name, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity);
-            _playerRef.GetComponent<Player>()._playerName = _playerName;
+            _playerRef.GetComponent<Player>().playerName = _playerName;
+            _playerRef.GetComponent<Player>().playerTarget = _targetName;
         }
 
         public void Connected()

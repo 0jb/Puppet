@@ -104,9 +104,16 @@ namespace Puppet.Source.Network
         public void Connect()
         {
             CurrentState = GameConnectState.Disconnected;
+            RoomOptions roomOptions = new RoomOptions();
+            roomOptions.MaxPlayers = 2;
+
+            TypedLobby typedLobby = new TypedLobby();
+            typedLobby.Type = LobbyType.Default;
+
             if(PhotonNetwork.IsConnected)
             {
-                PhotonNetwork.JoinRandomRoom();
+                //PhotonNetwork.JoinRandomRoom();
+                PhotonNetwork.JoinOrCreateRoom("pum", roomOptions, typedLobby);
             }
             else
             {

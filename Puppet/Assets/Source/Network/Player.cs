@@ -9,24 +9,23 @@ namespace Puppet.Source.Network
 
     public class Player : MonoBehaviourPun, IPunObservable
     {
-        public string _playerName = "";
-
-        [SerializeField]
-        private string _playerTarget;
+        public string playerName = "";
+        
+        public string playerTarget = "";
         
 
         public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
         {
             if (stream.IsWriting)
             {
-                stream.SendNext(_playerTarget);
+                stream.SendNext(playerTarget);
             }
             else if (stream.IsReading)
             {
                 string possibleName = (string)stream.ReceiveNext();
 
                 // Established link between both
-                if(possibleName == _playerName)
+                if(possibleName == playerName)
                 {
                     Debug.Log("Found me!");
                 }

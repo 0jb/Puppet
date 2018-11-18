@@ -109,8 +109,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb5bbe7029ead9847a123546016b9a8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerName: Igor
-  _playerTarget: 
+  playerName: 
+  playerTarget: 
 --- !u!114 &114546528930532548
 MonoBehaviour:
   m_ObjectHideFlags: 1
