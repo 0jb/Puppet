@@ -43,6 +43,8 @@ namespace Puppet.Source.Network
 
         public GameConnectState CurrentState;
 
+        public string roomName;
+
         #endregion
 
         public override void OnConnectedToMaster()
@@ -62,6 +64,7 @@ namespace Puppet.Source.Network
         public override void OnJoinedRoom()
         {
             CurrentState = GameConnectState.Joined;
+            _gameManager.CreatePlayer();
             _gameManager.Connected();
             Debug.Log("Joined room!");
         }
@@ -82,26 +85,23 @@ namespace Puppet.Source.Network
             
         }
 
-        ///<summary>
-        /// Monobehaviour called during initialization
-        ///</summary>
-        
-        private void Start()
-        {
-            Connect();
-        }
-
+               
         #endregion
 
         #region Public Methods
 
+
+        public void SetRoomName(string name)
+        {
+            roomName = name;
+        }
 
         /// <summary>
         /// Start the connection process.
         /// - If already connected, we attempt joining a random room.
         /// - If not yet connected, Connect this application instance to Photon Cloud Network
         /// </summary>
-        public void Connect()
+        public void Connect(string roomName)
         {
             CurrentState = GameConnectState.Disconnected;
             RoomOptions roomOptions = new RoomOptions();
@@ -113,7 +113,7 @@ namespace Puppet.Source.Network
             if(PhotonNetwork.IsConnected)
             {
                 //PhotonNetwork.JoinRandomRoom();
-                PhotonNetwork.JoinOrCreateRoom("pum", roomOptions, typedLobby);
+                PhotonNetwork.JoinOrCreateRoom(roomName, roomOptions, typedLobby);
             }
             else
             {

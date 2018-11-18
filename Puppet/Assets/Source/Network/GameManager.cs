@@ -37,8 +37,16 @@ namespace Puppet.Source.Network
         {
             Instance = this;
             _playerRef = PhotonNetwork.Instantiate(_player.name, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity);
-            _playerRef.GetComponent<Player>().playerName = _playerName;
-            _playerRef.GetComponent<Player>().playerTarget = _targetName;
+            _playerRef.GetComponent<Player>().ChangePlayerName(_playerName);
+            _playerRef.GetComponent<Player>().ChangeTargetName(_targetName);
+        }
+
+        public void UpdateLocalPlayerVisual( Color targetColor)
+        {
+            if(_playerRef != null)
+            {
+                _playerRef.GetComponent<Player>().ChangePlayerColor(targetColor);
+            }
         }
 
         public void Connected()
